@@ -101,7 +101,7 @@ http.createServer(function (req, res) {
                     if (headerList[23] != 'SHEM-KOVETZ-SHEL-MISMACH-BERAMAT-EIRUA-VEBERAMAT-LAKOACH') {
                         validations.push({ action: 'Read headers', colName: 'SHEM-KOVETZ-SHEL-MISMACH-BERAMAT-EIRUA-VEBERAMAT-LAKOACH', rowNumber: 0, err: 'SHEM-KOVETZ-SHEL-MISMACH-BERAMAT-EIRUA-VEBERAMAT-LAKOACH' + ' does not exist' });
                     }
-                    if (headerList[24] != 'SUG-MISMACH') {
+                    if (headerList[24] != 'SUG-MISMACH') {                        
                         validations.push({ action: 'Read headers', colName: 'SUG-MISMACH', rowNumber: 0, err: 'SUG-MISMACH' + ' does not exist' });
                     }
                     if (headerList[25] != 'SUG-KUPA') {
@@ -194,121 +194,122 @@ http.createServer(function (req, res) {
                 })
                 .on('data', function (data) {
                     if (!headersValid) {
-                        validations.push({ action: 'File headers check', colName: '', rowNumber: 0, err: 'File headers Invalid' });
+                        validations.push({ action: 'File header check', colName: '', rowNumber: 0, err: 'File header Invalid' });
                         return;
                     }
                     else if (rowNumber == 0) {
-                        validations.push({ action: 'File headers check', colName: '', rowNumber: 0, err: 'File headers valid' });
+                        validations.push({ action: 'File header check', colName: '', rowNumber: 0, err: 'File header valid' });
                     }
 
                     rowNumber++;
 
 
                     if (data['KOD-MEZAHE-KUPA-H-P'].length > 30) {
-                        validations.push({ action: 'Read headers', colName: 'KOD-MEZAHE-KUPA-H-P', rowNumber: rowNumber, err: 'KOD-MEZAHE-KUPA-H-P' + ' length > 30' });
+                        validations.push({ action: 'Read data', colName: 'KOD-MEZAHE-KUPA-H-P', rowNumber: rowNumber, err: 'KOD-MEZAHE-KUPA-H-P' + ' length > 30' });
 
                     }
                     if (data['SUG-MAFKID'] != 1 && data['SUG-MAFKID'] != 2) {
-                        validations.push({ action: 'Read headers', colName: 'SUG-MAFKID', rowNumber: rowNumber, err: 'SUG-MAFKID' + ' 1,2' });
+                        validations.push({ action: 'Read data', colName: 'SUG-MAFKID', rowNumber: rowNumber, err: 'SUG-MAFKID' + ' 1,2' });
                     }
                     if (data['SUG-MEZAHE-MAASIK'] != 1 && data['SUG-MEZAHE-MAASIK'] != 2 && data['SUG-MEZAHE-MAASIK'] != 3 && data['SUG-MEZAHE-MAASIK'] != 4 && data['SUG-MEZAHE-MAASIK'] != 5
                         && data['SUG-MEZAHE-MAASIK'] != 7 && data['SUG-MEZAHE-MAASIK'] != 8 && data['SUG-MEZAHE-MAASIK'] != 9 && data['SUG-MEZAHE-MAASIK'] != 10 && data['SUG-MEZAHE-MAASIK'] != 11
                         && data['SUG-MEZAHE-MAASIK'] != 12 && data['SUG-MEZAHE-MAASIK'] != 13) {
-                        validations.push({ action: 'Read headers', colName: 'SUG-MEZAHE-MAASIK', rowNumber: rowNumber, err: 'SUG-MEZAHE-MAASIK' + ' values 1,2,3,4,5,7,8,9,10,11,12,13' });
+                        validations.push({ action: 'Read data', colName: 'SUG-MEZAHE-MAASIK', rowNumber: rowNumber, err: 'SUG-MEZAHE-MAASIK' + ' values 1,2,3,4,5,7,8,9,10,11,12,13' });
                     }
                     if (data['MISPAR-ZIHUY-MAASIK'].length > 16) {
-                        validations.push({ action: 'Read headers', colName: 'MISPAR-ZIHUY-MAASIK', rowNumber: rowNumber, err: 'MISPAR-ZIHUY-MAASIK' + ' length > 16' });
+                        validations.push({ action: 'Read data', colName: 'MISPAR-ZIHUY-MAASIK', rowNumber: rowNumber, err: 'MISPAR-ZIHUY-MAASIK' + ' length > 16' });
                     }
                     if (Number.isFinite(data['SCHUM-HAFKADA-KOLEL'])) {
-                        validations.push({ action: 'Read headers', colName: 'SCHUM-HAFKADA-KOLEL', rowNumber: rowNumber, err: 'SCHUM-HAFKADA-KOLEL' + ' value decimal 15.2' });
+                        validations.push({ action: 'Read data', colName: 'SCHUM-HAFKADA-KOLEL', rowNumber: rowNumber, err: 'SCHUM-HAFKADA-KOLEL' + ' value decimal 15.2' });
                     }
                     if (data['SHEM-MAASIK'].length > 100) {
-                        validations.push({ action: 'Read headers', colName: 'SHEM-MAASIK', rowNumber: rowNumber, err: 'SHEM-MAASIK' + ' length > 100' });
+                        validations.push({ action: 'Read data', colName: 'SHEM-MAASIK', rowNumber: rowNumber, err: 'SHEM-MAASIK' + ' length > 100' });
                     }
                     if (data['SUG-PEULA'] != 1 && data['SUG-PEULA'] != 2 && data['SUG-PEULA'] != 3) {
-                        validations.push({ action: 'Read headers', colName: 'SUG-PEULA', rowNumber: rowNumber, err: 'SUG-PEULA' + ' values = 1,2,3' });
+                        validations.push({ action: 'Read data', colName: 'SUG-PEULA', rowNumber: rowNumber, err: 'SUG-PEULA' + ' values = 1,2,3' });
                     }
                     if (data['KOD-EMTZAI-TASHLUM'] != 1 && data['KOD-EMTZAI-TASHLUM'] != 2 && data['KOD-EMTZAI-TASHLUM'] != 3 && data['KOD-EMTZAI-TASHLUM'] != 4
                         && data['KOD-EMTZAI-TASHLUM'] != 5 && data['KOD-EMTZAI-TASHLUM'] != 6 && data['KOD-EMTZAI-TASHLUM'] != 7) {
-                        validations.push({ action: 'Read headers', colName: 'KOD-EMTZAI-TASHLUM', rowNumber: rowNumber, err: 'KOD-EMTZAI-TASHLUM' + ' values = 1,2,3,4,5,6,7' });
+                        validations.push({ action: 'Read data', colName: 'KOD-EMTZAI-TASHLUM', rowNumber: rowNumber, err: 'KOD-EMTZAI-TASHLUM' + ' values = 1,2,3,4,5,6,7' });
                     }
                     if (Number.isFinite(data['SACH-HAFKADA-KUPA-H-P'])) {
-                        validations.push({ action: 'Read headers', colName: 'SACH-HAFKADA-KUPA-H-P', rowNumber: rowNumber, err: 'SACH-HAFKADA-KUPA-H-P' + ' value decimal 15.2' });
+                        validations.push({ action: 'Read data', colName: 'SACH-HAFKADA-KUPA-H-P', rowNumber: rowNumber, err: 'SACH-HAFKADA-KUPA-H-P' + ' value decimal 15.2' });
                     }
                     if (data['TAARICH-ERECH-HAFKADA-LEKUPA'].length > 8) {
-                        validations.push({ action: 'Read headers', colName: 'TAARICH-ERECH-HAFKADA-LEKUPA', rowNumber: rowNumber, err: 'TAARICH-ERECH-HAFKADA-LEKUPA' + ' length > 8' });
+                        validations.push({ action: 'Read data', colName: 'TAARICH-ERECH-HAFKADA-LEKUPA', rowNumber: rowNumber, err: 'TAARICH-ERECH-HAFKADA-LEKUPA' + ' length > 8' });
                     }
                     if (data['MISPAR-ASMACHTA-LEAHAVARAT-KSAFIM'].length > 50) {
-                        validations.push({ action: 'Read headers', colName: 'MISPAR-ASMACHTA-LEAHAVARAT-KSAFIM', rowNumber: rowNumber, err: 'MISPAR-ASMACHTA-LEAHAVARAT-KSAFIM' + ' length > 50' });
+                        validations.push({ action: 'Read data', colName: 'MISPAR-ASMACHTA-LEAHAVARAT-KSAFIM', rowNumber: rowNumber, err: 'MISPAR-ASMACHTA-LEAHAVARAT-KSAFIM' + ' length > 50' });
                     }
                     if (data['MISPAR-ZIHUI'].length > 36) {
-                        validations.push({ action: 'Read headers', colName: 'MISPAR-ZIHUI', rowNumber: rowNumber, err: 'MISPAR-ZIHUI' + ' length > 36' });
+                        validations.push({ action: 'Read data', colName: 'MISPAR-ZIHUI', rowNumber: rowNumber, err: 'MISPAR-ZIHUI' + ' length > 36' });
                     }
                     if (data['MISPAR-BANK-MAASIK'].length > 3) {
-                        validations.push({ action: 'Read headers', colName: 'MISPAR-BANK-MAASIK', rowNumber: rowNumber, err: 'MISPAR-BANK-MAASIK' + ' length > 3' });
+                        validations.push({ action: 'Read data', colName: 'MISPAR-BANK-MAASIK', rowNumber: rowNumber, err: 'MISPAR-BANK-MAASIK' + ' length > 3' });
                     }
                     if (data['MISPAR-SNIF-MAASIK'].length > 3) {
-                        validations.push({ action: 'Read headers', colName: 'MISPAR-SNIF-MAASIK', rowNumber: rowNumber, err: 'MISPAR-SNIF-MAASIK' + ' length > 3' });
+                        validations.push({ action: 'Read data', colName: 'MISPAR-SNIF-MAASIK', rowNumber: rowNumber, err: 'MISPAR-SNIF-MAASIK' + ' length > 3' });
                     }
                     if (data['MISPAR-CHESHBON-MAASIK'].length > 20) {
-                        validations.push({ action: 'Read headers', colName: 'MISPAR-CHESHBON-MAASIK', rowNumber: rowNumber, err: 'MISPAR-CHESHBON-MAASIK' + ' length > 20' });
+                        validations.push({ action: 'Read data', colName: 'MISPAR-CHESHBON-MAASIK', rowNumber: rowNumber, err: 'MISPAR-CHESHBON-MAASIK' + ' length > 20' });
                     }
                     if (data['SUG-KARTIS-MAASIK'] != 1 && data['SUG-KARTIS-MAASIK'] != 2 && data['SUG-KARTIS-MAASIK'] != 3 && data['SUG-KARTIS-MAASIK'] != 4 && data['SUG-KARTIS-MAASIK'] != 5) {
-                        validations.push({ action: 'Read headers', colName: 'SUG-KARTIS-MAASIK', rowNumber: rowNumber, err: 'SUG-KARTIS-MAASIK' + ' value = 1,2,3,4,5' });
+                        validations.push({ action: 'Read data', colName: 'SUG-KARTIS-MAASIK', rowNumber: rowNumber, err: 'SUG-KARTIS-MAASIK' + ' value = 1,2,3,4,5' });
                     }
                     if (data['SUG-CHESHBON-MAASIK'] != 1 && data['SUG-CHESHBON-MAASIK'] != 2) {
-                        validations.push({ action: 'Read headers', colName: 'SUG-CHESHBON-MAASIK', rowNumber: rowNumber, err: 'SUG-CHESHBON-MAASIK' + ' value = 1,2' });
+                        validations.push({ action: 'Read data', colName: 'SUG-CHESHBON-MAASIK', rowNumber: rowNumber, err: 'SUG-CHESHBON-MAASIK' + ' value = 1,2' });
                     }
                     if (data['SUG-CHESHBON-KOLET-TASHLUM'] != 1 && data['SUG-CHESHBON-KOLET-TASHLUM'] != 2) {
-                        validations.push({ action: 'Read headers', colName: 'SUG-CHESHBON-KOLET-TASHLUM', rowNumber: rowNumber, err: 'SUG-CHESHBON-KOLET-TASHLUM' + ' value = 1,2' });
+                        validations.push({ action: 'Read data', colName: 'SUG-CHESHBON-KOLET-TASHLUM', rowNumber: rowNumber, err: 'SUG-CHESHBON-KOLET-TASHLUM' + ' value = 1,2' });
                     }
                     if (data['MISPAR-BANK-KOLET'].length > 3) {
-                        validations.push({ action: 'Read headers', colName: 'MISPAR-BANK-KOLET', rowNumber: rowNumber, err: 'MISPAR-BANK-KOLET' + ' length > 3' });
+                        validations.push({ action: 'Read data', colName: 'MISPAR-BANK-KOLET', rowNumber: rowNumber, err: 'MISPAR-BANK-KOLET' + ' length > 3' });
                     }
                     if (data['MISPAR-SNIF-KOLET'].length > 3) {
-                        validations.push({ action: 'Read headers', colName: 'MISPAR-SNIF-KOLET', rowNumber: rowNumber, err: 'MISPAR-SNIF-KOLET' + ' length > 3' });
+                        validations.push({ action: 'Read data', colName: 'MISPAR-SNIF-KOLET', rowNumber: rowNumber, err: 'MISPAR-SNIF-KOLET' + ' length > 3' });
                     }
                     if (data['MISPAR-CHESHBON-KOLET'].length > 20) {
-                        validations.push({ action: 'Read headers', colName: 'MISPAR-CHESHBON-KOLET', rowNumber: rowNumber, err: 'MISPAR-CHESHBON-KOLET' + ' length > 20' });
+                        validations.push({ action: 'Read data', colName: 'MISPAR-CHESHBON-KOLET', rowNumber: rowNumber, err: 'MISPAR-CHESHBON-KOLET' + ' length > 20' });
                     }
                     if (data['MISPAR-ZIHUI-KODEM'].length > 36) {
-                        validations.push({ action: 'Read headers', colName: 'MISPAR-ZIHUI-KODEM', rowNumber: rowNumber, err: 'MISPAR-ZIHUI-KODEM' + ' length > 36' });
+                        validations.push({ action: 'Read data', colName: 'MISPAR-ZIHUI-KODEM', rowNumber: rowNumber, err: 'MISPAR-ZIHUI-KODEM' + ' length > 36' });
                     }
                     if (data['MISPAR-MISLAKA-KODEM'].length > 36) {
-                        validations.push({ action: 'Read headers', colName: 'MISPAR-MISLAKA-KODEM', rowNumber: rowNumber, err: 'MISPAR-MISLAKA-KODEM' + ' length > 36' });
+                        validations.push({ action: 'Read data', colName: 'MISPAR-MISLAKA-KODEM', rowNumber: rowNumber, err: 'MISPAR-MISLAKA-KODEM' + ' length > 36' });
                     }
                     if (data['SHEM-KOVETZ-SHEL-MISMACH-BERAMAT-EIRUA-VEBERAMAT-LAKOACH'].length > 100) {
-                        validations.push({ action: 'Read headers', colName: 'SHEM-KOVETZ-SHEL-MISMACH-BERAMAT-EIRUA-VEBERAMAT-LAKOACH', rowNumber: rowNumber, err: 'SHEM-KOVETZ-SHEL-MISMACH-BERAMAT-EIRUA-VEBERAMAT-LAKOACH' + ' length > 100' });
+                        validations.push({ action: 'Read data', colName: 'SHEM-KOVETZ-SHEL-MISMACH-BERAMAT-EIRUA-VEBERAMAT-LAKOACH', rowNumber: rowNumber, err: 'SHEM-KOVETZ-SHEL-MISMACH-BERAMAT-EIRUA-VEBERAMAT-LAKOACH' + ' length > 100' });
                     }
                     if (data['SUG-MISMACH'] != 3) {
-                        validations.push({ action: 'Read headers', colName: 'SUG-MISMACH', rowNumber: rowNumber, err: 'SUG-MISMACH' + ' value = 3' });
+                        // Relevant to negative interface only validation not needed
+                        //validations.push({ action: 'Read data', colName: 'SUG-MISMACH', rowNumber: rowNumber, err: 'SUG-MISMACH' + ' value = 3' });
                     }
                     if (data['SUG-KUPA'] != 1 && data['SUG-KUPA'] != 2 && data['SUG-KUPA'] != 3 && data['SUG-KUPA'] != 4) {
-                        validations.push({ action: 'Read headers', colName: 'SUG-KUPA', rowNumber: rowNumber, err: 'SUG-KUPA' + ' value = 1,2,3,4' });
+                        validations.push({ action: 'Read data', colName: 'SUG-KUPA', rowNumber: rowNumber, err: 'SUG-KUPA' + ' value = 1,2,3,4' });
                     }
                     if (data['SUG-MEZAHE-OVED'] != 1 && data['SUG-MEZAHE-OVED'] != 2) {
-                        validations.push({ action: 'Read headers', colName: 'SUG-MEZAHE-OVED', rowNumber: rowNumber, err: 'SUG-MEZAHE-OVED' + ' value = 1,2' });
+                        validations.push({ action: 'Read data', colName: 'SUG-MEZAHE-OVED', rowNumber: rowNumber, err: 'SUG-MEZAHE-OVED' + ' value = 1,2' });
                     }
                     if (data['MISPAR-MEZAHE'].length > 16) {
-                        validations.push({ action: 'Read headers', colName: 'MISPAR-MEZAHE', rowNumber: rowNumber, err: 'MISPAR-MEZAHE' + ' length >16' });
+                        validations.push({ action: 'Read data', colName: 'MISPAR-MEZAHE', rowNumber: rowNumber, err: 'MISPAR-MEZAHE' + ' length >16' });
                     }
                     if (data['SHEM-PRATI'].length > 20) {
-                        validations.push({ action: 'Read headers', colName: 'SHEM-PRATI', rowNumber: rowNumber, err: 'SHEM-PRATI' + ' length >20' });
+                        validations.push({ action: 'Read data', colName: 'SHEM-PRATI', rowNumber: rowNumber, err: 'SHEM-PRATI' + ' length >20' });
                     }
                     if (data['SHEM-MISHPACHA'].length > 20) {
-                        validations.push({ action: 'Read headers', colName: 'SHEM-MISHPACHA', rowNumber: rowNumber, err: 'SHEM-MISHPACHA' + ' length >20' });
+                        validations.push({ action: 'Read data', colName: 'SHEM-MISHPACHA', rowNumber: rowNumber, err: 'SHEM-MISHPACHA' + ' length >20' });
                     }
                     if (data['CHODESH-MASKORET'].length > 6) {
-                        validations.push({ action: 'Read headers', colName: 'CHODESH-MASKORET', rowNumber: rowNumber, err: 'CHODESH-MASKORET' + ' length >6' });
+                        validations.push({ action: 'Read data', colName: 'CHODESH-MASKORET', rowNumber: rowNumber, err: 'CHODESH-MASKORET' + ' length >6' });
                     }
                     if (data['MAHAMAD-HAFKADA-BEKUPA'] != 1 && data['MAHAMAD-HAFKADA-BEKUPA'] != 2 && data['MAHAMAD-HAFKADA-BEKUPA'] != 3) {
-                        validations.push({ action: 'Read headers', colName: 'MAHAMAD-HAFKADA-BEKUPA', rowNumber: rowNumber, err: 'MAHAMAD-HAFKADA-BEKUPA' + ' value = 1,2,3' });
+                        validations.push({ action: 'Read data', colName: 'MAHAMAD-HAFKADA-BEKUPA', rowNumber: rowNumber, err: 'MAHAMAD-HAFKADA-BEKUPA' + ' value = 1,2,3' });
                     }
                     if (data['SUG-TAKBUL'] != 1 && data['SUG-TAKBUL'] != 2 && data['SUG-TAKBUL'] != 3 && data['SUG-TAKBUL'] != 4 && data['SUG-TAKBUL'] != 5) {
-                        validations.push({ action: 'Read headers', colName: 'SUG-TAKBUL', rowNumber: rowNumber, err: 'SUG-TAKBUL' + ' value = 1,2,3,4,5' });
+                        validations.push({ action: 'Read data', colName: 'SUG-TAKBUL', rowNumber: rowNumber, err: 'SUG-TAKBUL' + ' value = 1,2,3,4,5' });
                     }
                     if (Number.isFinite(data['SACHAR-MEDUVACH'])) {
-                        validations.push({ action: 'Read headers', colName: 'SACHAR-MEDUVACH', rowNumber: rowNumber, err: 'SACHAR-MEDUVACH' + ' value decimal 15.2' });
+                        validations.push({ action: 'Read data', colName: 'SACHAR-MEDUVACH', rowNumber: rowNumber, err: 'SACHAR-MEDUVACH' + ' value decimal 15.2' });
                     }
                     if (data['STATUS-OVED-BECHODESH-MASKORET'] != 1 && data['STATUS-OVED-BECHODESH-MASKORET'] != 2
                         && data['STATUS-OVED-BECHODESH-MASKORET'] != 3 && data['STATUS-OVED-BECHODESH-MASKORET'] != 4
@@ -317,61 +318,61 @@ http.createServer(function (req, res) {
                         && data['STATUS-OVED-BECHODESH-MASKORET'] != 10 && data['STATUS-OVED-BECHODESH-MASKORET'] != 11
                         && data['STATUS-OVED-BECHODESH-MASKORET'] != 12 && data['STATUS-OVED-BECHODESH-MASKORET'] != 13
                         && data['STATUS-OVED-BECHODESH-MASKORET'] != 14) {
-                        validations.push({ action: 'Read headers', colName: 'STATUS-OVED-BECHODESH-MASKORET', rowNumber: rowNumber, err: 'STATUS-OVED-BECHODESH-MASKORET' + ' value = 1,2,3,4,5,6,8,9,10,11,12,13,14' });
+                        validations.push({ action: 'Read data', colName: 'STATUS-OVED-BECHODESH-MASKORET', rowNumber: rowNumber, err: 'STATUS-OVED-BECHODESH-MASKORET' + ' value = 1,2,3,4,5,6,8,9,10,11,12,13,14' });
                     }
                     if (data['TAARICH-TCHILAT-STATUS'].length > 8) {
-                        validations.push({ action: 'Read headers', colName: 'TAARICH-TCHILAT-STATUS', rowNumber: rowNumber, err: 'TAARICH-TCHILAT-STATUS' + ' length >8' });
+                        validations.push({ action: 'Read data', colName: 'TAARICH-TCHILAT-STATUS', rowNumber: rowNumber, err: 'TAARICH-TCHILAT-STATUS' + ' length >8' });
                     }
                     if (Number.isFinite(data['CHELKIUT-MISRA'])) {
-                        validations.push({ action: 'Read headers', colName: 'CHELKIUT-MISRA', rowNumber: rowNumber, err: 'CHELKIUT-MISRA' + ' decimal value 5.2' });
+                        validations.push({ action: 'Read data', colName: 'CHELKIUT-MISRA', rowNumber: rowNumber, err: 'CHELKIUT-MISRA' + ' decimal value 5.2' });
                     }
                     if (Number.isFinite(data['YEMEI-AVODA-BECHODESH'])) {
-                        validations.push({ action: 'Read headers', colName: 'YEMEI-AVODA-BECHODESH', rowNumber: rowNumber, err: 'YEMEI-AVODA-BECHODESH' + ' length >31' });
+                        validations.push({ action: 'Read data', colName: 'YEMEI-AVODA-BECHODESH', rowNumber: rowNumber, err: 'YEMEI-AVODA-BECHODESH' + ' length >31' });
                     }
                     if (data['SUG-HAFRASHA-A'] != 1 && data['SUG-HAFRASHA-A'] != 2 && data['SUG-HAFRASHA-A'] != 3 && data['SUG-HAFRASHA-A'] != 4 && data['SUG-HAFRASHA-A'] != 5 && data['SUG-HAFRASHA-A'] != 6 && data['SUG-HAFRASHA-A'] != 7 && data['SUG-HAFRASHA-A'] != 8) {
-                        validations.push({ action: 'Read headers', colName: 'SUG-HAFRASHA-A', rowNumber: rowNumber, err: 'SUG-HAFRASHA-A' + ' value = 1,2,3,4,5,6,7,8' });
+                        validations.push({ action: 'Read data', colName: 'SUG-HAFRASHA-A', rowNumber: rowNumber, err: 'SUG-HAFRASHA-A' + ' value = 1,2,3,4,5,6,7,8' });
                     }
                     if (Number.isFinite(data['SHIUR-HAFRASHA-A'])) {
-                        validations.push({ action: 'Read headers', colName: 'SHIUR-HAFRASHA-A', rowNumber: rowNumber, err: 'SHIUR-HAFRASHA-A' + ' decimal value 4.2' });
+                        validations.push({ action: 'Read data', colName: 'SHIUR-HAFRASHA-A', rowNumber: rowNumber, err: 'SHIUR-HAFRASHA-A' + ' decimal value 4.2' });
                     }
                     if (Number.isFinite(data['SCHUM-HAFRASHA-A'])) {
-                        validations.push({ action: 'Read headers', colName: 'SCHUM-HAFRASHA-A', rowNumber: rowNumber, err: 'SCHUM-HAFRASHA-A' + ' decimal value 15.2' });
+                        validations.push({ action: 'Read data', colName: 'SCHUM-HAFRASHA-A', rowNumber: rowNumber, err: 'SCHUM-HAFRASHA-A' + ' decimal value 15.2' });
                     }
                     if (Number.isFinite(data['SACH-TASHLUMIM-PTURIM-A'])) {
-                        validations.push({ action: 'Read headers', colName: 'SACH-TASHLUMIM-PTURIM-A', rowNumber: rowNumber, err: 'SACH-TASHLUMIM-PTURIM-A' + ' decimal value 15.2' });
+                        validations.push({ action: 'Read data', colName: 'SACH-TASHLUMIM-PTURIM-A', rowNumber: rowNumber, err: 'SACH-TASHLUMIM-PTURIM-A' + ' decimal value 15.2' });
                     }
                     if (data['MISPAR-MEZAHE-RESHUMA-A'].length > 36) {
-                        validations.push({ action: 'Read headers', colName: 'MISPAR-MEZAHE-RESHUMA-A', rowNumber: rowNumber, err: 'MISPAR-MEZAHE-RESHUMA-A' + ' length >36' });
+                        validations.push({ action: 'Read data', colName: 'MISPAR-MEZAHE-RESHUMA-A', rowNumber: rowNumber, err: 'MISPAR-MEZAHE-RESHUMA-A' + ' length >36' });
                     }
                     if (data['SUG-HAFRASHA-B'] != 1 && data['SUG-HAFRASHA-B'] != 2 && data['SUG-HAFRASHA-B'] != 3 && data['SUG-HAFRASHA-B'] != 4 && data['SUG-HAFRASHA-B'] != 5 && data['SUG-HAFRASHA-B'] != 6 && data['SUG-HAFRASHA-B'] != 7 && data['SUG-HAFRASHA-B'] != 8) {
-                        validations.push({ action: 'Read headers', colName: 'SUG-HAFRASHA-B', rowNumber: rowNumber, err: 'SUG-HAFRASHA-B' + ' value = 1,2,3,4,5,6,7,8' });
+                        validations.push({ action: 'Read data', colName: 'SUG-HAFRASHA-B', rowNumber: rowNumber, err: 'SUG-HAFRASHA-B' + ' value = 1,2,3,4,5,6,7,8' });
                     }
                     if (Number.isFinite(data['SHIUR-HAFRASHA-B'])) {
-                        validations.push({ action: 'Read headers', colName: 'SHIUR-HAFRASHA-B', rowNumber: rowNumber, err: 'SHIUR-HAFRASHA-B' + ' decimal value 4.2' });
+                        validations.push({ action: 'Read data', colName: 'SHIUR-HAFRASHA-B', rowNumber: rowNumber, err: 'SHIUR-HAFRASHA-B' + ' decimal value 4.2' });
                     }
                     if (Number.isFinite(data['SCHUM-HAFRASHA-B'])) {
-                        validations.push({ action: 'Read headers', colName: 'SCHUM-HAFRASHA-B', rowNumber: rowNumber, err: 'SCHUM-HAFRASHA-B' + ' decimal value 15.2' });
+                        validations.push({ action: 'Read data', colName: 'SCHUM-HAFRASHA-B', rowNumber: rowNumber, err: 'SCHUM-HAFRASHA-B' + ' decimal value 15.2' });
                     }
                     if (Number.isFinite(data['SACH-TASHLUMIM-PTURIM-B'])) {
-                        validations.push({ action: 'Read headers', colName: 'SACH-TASHLUMIM-PTURIM-B', rowNumber: rowNumber, err: 'SACH-TASHLUMIM-PTURIM-B' + ' decimal value 15.2' });
+                        validations.push({ action: 'Read data', colName: 'SACH-TASHLUMIM-PTURIM-B', rowNumber: rowNumber, err: 'SACH-TASHLUMIM-PTURIM-B' + ' decimal value 15.2' });
                     }
                     if (data['MISPAR-MEZAHE-RESHUMA-B'].length > 36) {
-                        validations.push({ action: 'Read headers', colName: 'MISPAR-MEZAHE-RESHUMA-B', rowNumber: rowNumber, err: 'MISPAR-MEZAHE-RESHUMA-B' + ' length >36' });
+                        validations.push({ action: 'Read data', colName: 'MISPAR-MEZAHE-RESHUMA-B', rowNumber: rowNumber, err: 'MISPAR-MEZAHE-RESHUMA-B' + ' length >36' });
                     }
                     if (data['SUG-HAFRASHA-C'] != 1 && data['SUG-HAFRASHA-C'] != 2 && data['SUG-HAFRASHA-C'] != 3 && data['SUG-HAFRASHA-C'] != 4 && data['SUG-HAFRASHA-C'] != 5 && data['SUG-HAFRASHA-C'] != 6 && data['SUG-HAFRASHA-C'] != 7 && data['SUG-HAFRASHA-C'] != 8) {
-                        validations.push({ action: 'Read headers', colName: 'SUG-HAFRASHA-C', rowNumber: rowNumber, err: 'SUG-HAFRASHA-C' + ' value = 1,2,3,4,5,6,7,8' });
+                        validations.push({ action: 'Read data', colName: 'SUG-HAFRASHA-C', rowNumber: rowNumber, err: 'SUG-HAFRASHA-C' + ' value = 1,2,3,4,5,6,7,8' });
                     }
                     if (Number.isFinite(data['SHIUR-HAFRASHA-C'])) {
-                        validations.push({ action: 'Read headers', colName: 'SHIUR-HAFRASHA-C', rowNumber: rowNumber, err: 'SHIUR-HAFRASHA-C' + ' decimal value 4.2' });
+                        validations.push({ action: 'Read data', colName: 'SHIUR-HAFRASHA-C', rowNumber: rowNumber, err: 'SHIUR-HAFRASHA-C' + ' decimal value 4.2' });
                     }
                     if (Number.isFinite(data['SCHUM-HAFRASHA-C'])) {
-                        validations.push({ action: 'Read headers', colName: 'SCHUM-HAFRASHA-C', rowNumber: rowNumber, err: 'SCHUM-HAFRASHA-C' + ' decimal value 15.2' });
+                        validations.push({ action: 'Read data', colName: 'SCHUM-HAFRASHA-C', rowNumber: rowNumber, err: 'SCHUM-HAFRASHA-C' + ' decimal value 15.2' });
                     }
                     if (Number.isFinite(data['SACH-TASHLUMIM-PTURIM-C'])) {
-                        validations.push({ action: 'Read headers', colName: 'SACH-TASHLUMIM-PTURIM-C', rowNumber: rowNumber, err: 'SACH-TASHLUMIM-PTURIM-C' + ' decimal value 15.2' });
+                        validations.push({ action: 'Read data', colName: 'SACH-TASHLUMIM-PTURIM-C', rowNumber: rowNumber, err: 'SACH-TASHLUMIM-PTURIM-C' + ' decimal value 15.2' });
                     }
                     if (data['MISPAR-MEZAHE-RESHUMA-C'].length > 36) {
-                        validations.push({ action: 'Read headers', colName: 'MISPAR-MEZAHE-RESHUMA-C ]', rowNumber: rowNumber, err: 'MISPAR-MEZAHE-RESHUMA-C ]' + ' length >36' });
+                        validations.push({ action: 'Read data', colName: 'MISPAR-MEZAHE-RESHUMA-C ]', rowNumber: rowNumber, err: 'MISPAR-MEZAHE-RESHUMA-C ]' + ' length >36' });
                     }
 
                     if (validations.length == 1)

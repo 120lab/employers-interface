@@ -1,5 +1,5 @@
 FROM node:10.0
-LABEL environment="DEVELOPMENT"
+LABEL environment="DEV"
 EXPOSE 80
 RUN mkdir -p /usr/src/app/
 WORKDIR /usr/src/app
