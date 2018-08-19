@@ -1,0 +1,39 @@
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
+
+if exists (select * from dbo.sysobjects where id = object_id(N'[dbo].[vLIB_FundEncoding]') and OBJECTPROPERTY(id, N'IsView') = 1)
+drop view [dbo].[vLIB_FundEncoding]
+GO
+
+
+CREATE VIEW [dbo].[vLIB_FundEncoding] AS 
+
+-- CREATE DATE: 11/05/2011
+-- AUTHOR: Yael
+
+	SELECT  Fund.RecordKey AS FundCode,
+			
+			RIGHT('000000000' + CAST(CASE WHEN Fund.RecordKey = 101 THEN 510142789 ELSE Management.CompanyNumber END AS nvarchar(9)), 9) +	
+			RIGHT('00000000000000' + CAST(ISNULL(Fund.FundTaxNumber,0) AS nvarchar(14)) , 14) + 
+			'0000000' AS FundEncodingNoHyphen,
+
+			RIGHT('000000000' + CAST(CASE WHEN Fund.RecordKey = 101 THEN 510142789 ELSE Management.CompanyNumber END AS nvarchar(9)), 9) +	
+			'-' +
+			RIGHT('00000000000000' + CAST(ISNULL(Fund.FundTaxNumber,0) AS nvarchar(14)) , 14) + 
+			'-' +
+			'0000' +
+			'-' +
+			'000' AS FundEncoding
+	
+	FROM	Fund
+			INNER JOIN Management
+				ON Fund.ManagementCode = Management.RecordKey
+
+
+GO
+SET QUOTED_IDENTIFIER ON 
+GO
+SET ANSI_NULLS ON 
+GO
