@@ -3,14 +3,14 @@ const bodyParser = require('body-parser');
 const cors = require('cors')
 
 var corsOptions = {
-  origin: 'http://localhost',
+  origin: 'http://localhost:8081',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
 }
 
 var app = express();
 app.use(bodyParser.json({ type: 'application/json'}));
 app.use(cors(corsOptions));
-
+//app.use(express.static(__dirname + '/client'));
 
 // app.get('/alive', function (req, res) {
     
@@ -22,3 +22,5 @@ app.use(cors(corsOptions));
 // })
 
 module.exports = app;
+module.exports.express_static_dirname = express.static(__dirname + '/client');
+

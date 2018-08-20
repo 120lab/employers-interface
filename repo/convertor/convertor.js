@@ -6,23 +6,16 @@ const fs = require('fs');
 const Json2csvParser = require('json2csv').Parser;
 const request = require('request');
 const path = require('path');
-
 const app = require('./app');
-const iconv = require('iconv');
+const format = require("string-template")
+const read = require('read-file');
 
 var headersValid = false;
 var dataValid = false;
 var rowNumber = 0;
 var validations = [];
-var dbInputFileKey = 0;
 
 const validationFields = ['action', 'rowNumber', 'colName', 'err'];
-
-//const customerKey = 1;
-
-// http.createServer(function (req, res) {
-
-// }).listen(8081);
 
 
 app.get('/', function (req, res) {
@@ -32,19 +25,11 @@ app.get('/', function (req, res) {
     if (req.url == '/' && req.method.toLowerCase() == 'get') {
         // parse a file upload
         // show a file upload form    
+
+        var responseClient = read.sync('./repo/convertor/client/form-upload.tmpl', 'utf8');
+
         res.writeHead(200, { 'content-type': 'text/html' });
-        res.end(
-            '<html><head></head>' +
-            '<body>' +
-            '<div style="border:1px; height: 100vh;width: 100vw;display: flex;justify-content: center;align-items: center">' +
-            '<form action="/upload" enctype="multipart/form-data" method="post">' +
-            // '<input type="text" name="title" placeholder="Company Number">' +
-            '<input type="file" name="upload" style=";margin:10px;" multiple="multiple" size= /></br>' +
-            '<input type="submit" value="VALIDATE" style=";margin:10px;-moz-box-shadow: 1px 1px 6px 2px #9fb4f2;	-webkit-box-shadow: 1px 1px 6px 2px #9fb4f2;	box-shadow: 1px 1px 6px 2px #9fb4f2;	background-color:#7892c2;	-moz-border-radius:10px;	-webkit-border-radius:10px;	border-radius:10px;	border:2px solid #4e6096;	display:inline-block;	cursor:pointer;	color:#ffffff;	font-family:Arial;	font-size:19px;	padding:7px 76px;	text-decoration:none;	text-shadow:0px 1px 0px #283966;">' +
-            '</form>' +
-            '</div></body>' +
-            '</html>'
-        );
+        res.end(responseClient);
     };
 })
 
@@ -466,16 +451,14 @@ app.post('/upload', function (req, res) {
                     if (err) throw err;
 
                     // show a feedback download form    
+                    var responseClient = read.sync('./repo/convertor/client/form-feedback.tmpl', 'utf8');
+                    responseClient = format(responseClient, {
+                        csv: encodeURI('data:text/csv;charset=utf-8,' + csv) ,
+                        resultFileName : resultFileName
+                    })
+                
                     res.writeHead(200, { 'content-type': 'text/html' });
-                    res.end(
-                        '<div style="height: 100vh;width: 100vw;display: flex;justify-content: center;align-items: center">' +
-                        '<form action="/output" enctype="multipart/form-data" method="post">' +
-                        '<a style=";margin:20px;" href="' + encodeURI('data:text/csv;charset=utf-8,' + csv) + '" download="' + resultFileName + '">Download validation file</a>' +
-                        '</br>' +
-                        '<input type="submit" value="CONVERT" style=";margin:10px;-moz-box-shadow: 1px 1px 6px 2px #9fb4f2;	-webkit-box-shadow: 1px 1px 6px 2px #9fb4f2;	box-shadow: 1px 1px 6px 2px #9fb4f2;	background-color:#7892c2;	-moz-border-radius:10px;	-webkit-border-radius:10px;	border-radius:10px;	border:2px solid #4e6096;	display:inline-block;	cursor:pointer;	color:#ffffff;	font-family:Arial;	font-size:19px;	padding:7px 76px;	text-decoration:none;	text-shadow:0px 1px 0px #283966;">' +
-                        '</form>' +
-                        '</div>'
-                    );
+                    res.end(responseClient);
                 });
 
             })
@@ -507,18 +490,15 @@ app.post('/output', function (req, res) {
 
         fs.writeFile(body.InputFileName, 'data:text/xml;charset=utf-8,' + body.FileXml, (err) => {
             if (err) throw err;
-    
-            // show a feedback download form    
+
+            // show a feedback download form   
+            var responseClient = read.sync('./repo/convertor/client/form-xml.tmpl', 'utf8');
+            responseClient = format(responseClient, {
+                xml: encodeURI('data:text/csv;charset=utf-8,' + body.FileXml) ,
+                resultFileName : body.InputFileName
+            }) 
             res.writeHead(200, { 'content-type': 'text/html' });
-            res.end(
-                '<div style="height: 100vh;width: 100vw;display: flex;justify-content: center;align-items: center">' +
-                '<form action="/return" enctype="multipart/form-data" method="post">' +
-                '<a style=";margin:20px;" href="' + encodeURI('data:text/csv;charset=utf-8,' + body.FileXml) + '" download="' + body.InputFileName + '">Download converted file</a>' +
-                '</br>' +
-                '<input type="submit" value="END" style=";margin:10px;-moz-box-shadow: 1px 1px 6px 2px #9fb4f2;	-webkit-box-shadow: 1px 1px 6px 2px #9fb4f2;	box-shadow: 1px 1px 6px 2px #9fb4f2;	background-color:#7892c2;	-moz-border-radius:10px;	-webkit-border-radius:10px;	border-radius:10px;	border:2px solid #4e6096;	display:inline-block;	cursor:pointer;	color:#ffffff;	font-family:Arial;	font-size:19px;	padding:7px 76px;	text-decoration:none;	text-shadow:0px 1px 0px #283966;">' +
-                '</form>' +
-                '</div>'
-            );
+            res.end(responseClient);
         });
     });
 
@@ -530,7 +510,7 @@ app.post('/return', function (req, res) {
 
     var options = {
         method: 'GET',
-        url: 'http://localhost:8081/',
+        url: 'http://localhost:8083/',
         headers:
             { 'cache-control': 'no-cache' }
     };
@@ -544,7 +524,7 @@ app.post('/return', function (req, res) {
     return;
 })
 
-var server = app.listen(8081, "localhost", function () {
+var server = app.listen(8083, "localhost", function () {
     var host = server.address().address
     var port = server.address().port
 
