@@ -5,11 +5,12 @@
   "main": "convertor.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./convertor.js localhost 8080"
+    "start": "forever start forever.json"
   },
   "author": "Idan Gvili <idan.gvili@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "autodetect-decoder-stream": "^1.0.0",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "csv-parser": "^1.12.1",

@@ -1,0 +1,14 @@
+[
+    {
+        "uid": "app",
+        "append": true,
+        "watch": true,
+        "script": "convertor.js"
+    },
+    {
+        "uid": "dal",
+        "append": true,
+        "watch": true,
+        "script": "data-layer-sql.js"
+    }
+]

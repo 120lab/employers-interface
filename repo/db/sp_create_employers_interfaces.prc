@@ -3,14 +3,15 @@ drop procedure dbo.sp_create_employers_interfaces
 GO
 
 CREATE PROCEDURE dbo.sp_create_employers_interfaces 
-	@InputFileKey INT
+	--@InputFileKey INT
 AS
 
-/*
+--/*
 
-DECLARE	@InputFileKey INT = 4
+--DECLARE	@InputFileKey INT = 4
 
-*/
+--*/
+
 	DECLARE @RunDate DATETIME = GETDATE()	
 
 	DECLARE @NUM_OF_POLICIES INT
@@ -26,6 +27,7 @@ DECLARE	@InputFileKey INT = 4
 	EXEC spATLIB_DropTempTable '#RawData'
 	EXEC spATLIB_DropTempTable '#Output'
 
+	DECLARE	@InputFileKey INT = (SELECT MAX (InputFile.RecordKey) FROM InputFile )
 	DECLARE	@CompanyNumber INT  = (SELECT InputFile.CustomerKey FROM InputFile WHERE InputFile.RecordKey = @InputFileKey)
 	
 	SELECT	InputFileData.RecordKey
@@ -301,7 +303,7 @@ DECLARE	@InputFileKey INT = 4
 			6																			AS [SUG-PONE],
 			1																			AS [SUG-KOD-MEZAHE-PONE],
 			514554666																	AS [MISPAR-MEZAHE-PONE],
-			'דלי אלון סוכנות לביטוח בע"מ'												AS [SHEM-GOREM-PONE],
+			N'דלי אלון סוכנות לביטוח בע"מ'											AS [SHEM-GOREM-PONE],
 			NULL																		AS [MISPAR-MEZAHE-METAFEL],
 			NULL																		AS [SHEM-PRATI-PONE-LEMISLAKA],
 			NULL																		AS [SHEM-MISHPACHA-PONE-LEMISLAKA],
@@ -341,12 +343,12 @@ DECLARE	@InputFileKey INT = 4
 	SELECT 
 			6																		AS [KOD-SHOLECH],	-- מסלקה
 			1																		AS [SUG-MEZAHE-SHOLECH],	-- ח.פ
-			'514554666'																AS [MISPAR-ZIHUI-SHOLECH],
-			'דלי אלון סוכנות לביטוח בע"מ'											AS [SHEM-GOREM-SHOLECH],
-			'לימור'																	AS [SHEM-PRATI-ISH-KESHER-SHOLECH],
-			'ניסן'																	AS [SHEM-MISHPACHA-ISH-KESHER-SHOLECH],
-			'037333441'																AS [MISPAR-TELEPHONE-KAVI-ISH-KESHER-SHOLECH],
-			'info@pensiahova.co.il'													AS [E-MAIL-ISH-KESHER-SHOLECH],
+			N'514554666'															AS [MISPAR-ZIHUI-SHOLECH],
+			N'דלי אלון סוכנות לביטוח בע"מ'										AS [SHEM-GOREM-SHOLECH],
+			N'לימור'																AS [SHEM-PRATI-ISH-KESHER-SHOLECH],
+			N'ניסן'																	AS [SHEM-MISHPACHA-ISH-KESHER-SHOLECH],
+			N'037333441'															AS [MISPAR-TELEPHONE-KAVI-ISH-KESHER-SHOLECH],
+			N'info@pensiahova.co.il'												AS [E-MAIL-ISH-KESHER-SHOLECH],
 			NULL																	AS [MISPAR-CELLULARI-ISH-KESHER-SHOLECH]
 	INTO #NetuneiGoremSholech
 
@@ -580,19 +582,7 @@ DECLARE	@InputFileKey INT = 4
 		) AS FileXml,
 		NULL AS XmlReady
 	INTO #Output	
-	
-	--UPDATE	#Output
-	--SET		XmlReady = '<?xml version="1.0" encoding="UTF-8"?>' 
-	--					+	
-	--					CAST(FileXml AS VARCHAR(MAX))
-
-	--SELECT '<?xml version="1.0" encoding="UTF-8"?>' + CAST((SELECT FileXml FROM #Output FOR XML PATH('')) AS VARCHAR(MAX)) AS XmlData
-
-	--DECLARE @My XML = (SELECT FileXml FROM #Output)
-	--SET @My.modify('insert <?xml version="1.0" encoding="UTF-8"? /> as first into (/MimshakMaasikim)[1]')
-	--SELECT @my 
-	
-	
+			
 	if exists (select * from #Policies )
 		select * from #Output
 	GO

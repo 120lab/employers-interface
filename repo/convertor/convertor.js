@@ -1,3 +1,4 @@
+const app = require('./app');
 const formidable = require('formidable'),
     http = require('http'),
     util = require('util');
@@ -6,9 +7,9 @@ const fs = require('fs');
 const Json2csvParser = require('json2csv').Parser;
 const request = require('request');
 const path = require('path');
-const app = require('./app');
 const format = require("string-template")
 const read = require('read-file');
+var AutoDetectDecoderStream = require('autodetect-decoder-stream');
 
 var headersValid = false;
 var dataValid = false;
@@ -16,7 +17,8 @@ var rowNumber = 0;
 var validations = [];
 
 const validationFields = ['action', 'rowNumber', 'colName', 'err'];
-
+const templatePath = './client/';
+//const templatePath = './repo/convertor/client/';
 
 app.get('/', function (req, res) {
 
@@ -26,7 +28,7 @@ app.get('/', function (req, res) {
         // parse a file upload
         // show a file upload form    
 
-        var responseClient = read.sync('./repo/convertor/client/form-upload.tmpl', 'utf8');
+        var responseClient = read.sync( templatePath + 'form-upload.tmpl', 'utf8');
 
         res.writeHead(200, { 'content-type': 'text/html' });
         res.end(responseClient);
@@ -41,8 +43,8 @@ app.post('/upload', function (req, res) {
     form.parse(req, function (err, fields, files) {
 
         fs.createReadStream(files.upload.path)
-            .pipe(csv())
-
+        .pipe(new AutoDetectDecoderStream({ defaultEncoding: '1251' }))
+        .pipe(csv())
             .on('headers', function (headerList) {
 
                 validations = [];
@@ -451,7 +453,7 @@ app.post('/upload', function (req, res) {
                     if (err) throw err;
 
                     // show a feedback download form    
-                    var responseClient = read.sync('./repo/convertor/client/form-feedback.tmpl', 'utf8');
+                    var responseClient = read.sync( templatePath + 'form-feedback.tmpl', 'utf8');
                     responseClient = format(responseClient, {
                         csv: encodeURI('data:text/csv;charset=utf-8,' + csv) ,
                         resultFileName : resultFileName
@@ -479,12 +481,13 @@ app.post('/output', function (req, res) {
             'cache-control': 'no-cache',
             'content-type': 'application/json'
         },
-        body: { InputFileKey: 2 },
+        body: { InputFileKey: null },
         json: true
     };
 
     request(options, function (error, response, body) {
-        if (error) throw new Error(error);
+        if (error || response.statusCode == 400 ) 
+            throw new Error((error == null ? body : error));
 
         console.log(body);
 
@@ -492,7 +495,7 @@ app.post('/output', function (req, res) {
             if (err) throw err;
 
             // show a feedback download form   
-            var responseClient = read.sync('./repo/convertor/client/form-xml.tmpl', 'utf8');
+            var responseClient = read.sync( templatePath + 'form-xml.tmpl', 'utf8');
             responseClient = format(responseClient, {
                 xml: encodeURI('data:text/csv;charset=utf-8,' + body.FileXml) ,
                 resultFileName : body.InputFileName
