@@ -210,7 +210,7 @@ AS
 	EXEC spATLIB_DropTempTable '#SachHafrashaLeKupaBechodeshMaskoretOved'
 	SELECT 
 		PolicyKey																									  AS ChodeshMaskoretVestatusOvedId,
-		SUM(CAST(MoneySumA AS DECIMAL(15,2)) + CAST(MoneyPartB AS DECIMAL(15,2)) + CAST(MoneyPartC AS DECIMAL(15,2))) AS [SACH-HAFRASHA-BECHODESH-MASKORET]
+		SUM(CAST(MoneySumA AS DECIMAL(15,2)) + CAST(MoneySumB AS DECIMAL(15,2)) + CAST(MoneySumC AS DECIMAL(15,2))) AS [SACH-HAFRASHA-BECHODESH-MASKORET]
 	INTO #SachHafrashaLeKupaBechodeshMaskoretOved
 	FROM #RawData
 	GROUP BY PolicyKey
@@ -218,7 +218,7 @@ AS
 	EXEC spATLIB_DropTempTable '#SachHafrashaLeOvedBekupa'
 	SELECT 
 		MemberId																		AS PirteiOvedId,
-		SUM(CAST(MoneySumA AS DECIMAL(15,2)) + CAST(MoneyPartB AS DECIMAL(15,2)) + CAST(MoneyPartC AS DECIMAL(15,2)))										AS [SACH-HAFRASHA-LEOVED-BEKUPA]																		
+		SUM(CAST(MoneySumA AS DECIMAL(15,2)) + CAST(MoneySumB AS DECIMAL(15,2)) + CAST(MoneySumC AS DECIMAL(15,2)))										AS [SACH-HAFRASHA-LEOVED-BEKUPA]																		
 	INTO #SachHafrashaLeOvedBekupa
 	FROM #RawData
 	GROUP BY MemberId
@@ -226,8 +226,8 @@ AS
 	EXEC spATLIB_DropTempTable '#SachHafrashaLeKupaMaasik'
 	SELECT 
 			EmployerFundCode															AS PirteiHaavaratKsafimId,
-			SUM(CAST(MoneySumA AS DECIMAL(15,2)) + CAST(MoneyPartB AS DECIMAL(15,2)) + CAST(MoneyPartC AS DECIMAL(15,2)))	AS [SACH-HAFRASHA-LEKUPA-BERAMAT-MAASIK],
-			SUM(CAST(MoneySumA AS DECIMAL(15,2)) + CAST(MoneyPartB AS DECIMAL(15,2)) + CAST(MoneyPartC AS DECIMAL(15,2)))	AS [SACH-HAFKADA-LEKUPA-BERAMAT-MAASIK],
+			SUM(CAST(MoneySumA AS DECIMAL(15,2)) + CAST(MoneySumB AS DECIMAL(15,2)) + CAST(MoneySumC AS DECIMAL(15,2)))	AS [SACH-HAFRASHA-LEKUPA-BERAMAT-MAASIK],
+			SUM(CAST(MoneySumA AS DECIMAL(15,2)) + CAST(MoneySumB AS DECIMAL(15,2)) + CAST(MoneySumC AS DECIMAL(15,2)))	AS [SACH-HAFKADA-LEKUPA-BERAMAT-MAASIK],
 			COUNT(DISTINCT MemberId)													AS [MISPAR-AMITIM-BERAMAT-MAASIK]	
 	INTO #SachHafrashaLeKupaMaasik
 	FROM #RawData
@@ -251,11 +251,11 @@ AS
 			EmployerCorporationId																							AS [MISPAR-ZIHUY-MAASIK],
 			NULL/*EmployerNumber*/																							AS [KOD-MEZAHE-MAASIK-ETZEL-YATZRAN],
 			NULL																											AS [KOD-MASAV],
-			SUM(CAST(MoneySumA AS DECIMAL(15,2)) + CAST(MoneyPartB AS DECIMAL(15,2)) + CAST(MoneyPartC AS DECIMAL(15,2)))	AS [SCHUM-HAFKADA-KOLEL],
+			SUM(CAST(MoneySumA AS DECIMAL(15,2)) + CAST(MoneySumB AS DECIMAL(15,2)) + CAST(MoneySumC AS DECIMAL(15,2)))	AS [SCHUM-HAFKADA-KOLEL],
 			EmployerName																									AS [SHEM-MAASIK],
 			ActionType																										AS [SUG-PEULA],		-- דיווח רגיל/שוטף
 			PayType																											AS [KOD-EMTZAI-TASHLUM],	-- העברה בנקאית
-			SUM(CAST(MoneySumA AS DECIMAL(15,2)) + CAST(MoneyPartB AS DECIMAL(15,2)) + CAST(MoneyPartC AS DECIMAL(15,2)))	AS [SACH-HAFKADA-KUPA-H-P],
+			SUM(CAST(MoneySumA AS DECIMAL(15,2)) + CAST(MoneySumB AS DECIMAL(15,2)) + CAST(MoneySumC AS DECIMAL(15,2)))	AS [SACH-HAFKADA-KUPA-H-P],
 			ValueDate																	AS [TAARICH-ERECH-HAFKADA-LEKUPA],
 			NULL																		AS [TAARICH-ERECH-HAFKADA-CHESHBON-NEHEMANUT],
 			MoneyReference																AS [MISPAR-ASMACHTA-LEAHAVARAT-KSAFIM],
@@ -271,7 +271,7 @@ AS
 			RIGHT('000'+ISNULL(DepartKeyInPay,''),3)									AS [MISPAR-SNIF-KOLET],
 			RIGHT('00000000000000000000'+ISNULL(AccountInPay,''),20)					AS [MISPAR-CHESHBON-KOLET],
 			NULL																		AS [MISPAR-ZIHUI-KODEM],
-			NEWID()																		AS [MISPAR-MISLAKA],
+			NULL																		AS [MISPAR-MISLAKA],
 			NULL																		AS [MISPAR-MISLAKA-KODEM]
 	INTO #PirteiHaavaratKsafim
 	FROM #RawData
@@ -302,8 +302,8 @@ AS
 	SELECT 
 			6																			AS [SUG-PONE],
 			1																			AS [SUG-KOD-MEZAHE-PONE],
-			514554666																	AS [MISPAR-MEZAHE-PONE],
-			N'דלי אלון סוכנות לביטוח בע"מ'											AS [SHEM-GOREM-PONE],
+			'514554666'																	AS [MISPAR-MEZAHE-PONE],
+			CAST(N'דלי אלון סוכנות לביטוח בע"מ' AS Nvarchar(500))						AS [SHEM-GOREM-PONE],
 			NULL																		AS [MISPAR-MEZAHE-METAFEL],
 			NULL																		AS [SHEM-PRATI-PONE-LEMISLAKA],
 			NULL																		AS [SHEM-MISHPACHA-PONE-LEMISLAKA],
@@ -343,12 +343,12 @@ AS
 	SELECT 
 			6																		AS [KOD-SHOLECH],	-- מסלקה
 			1																		AS [SUG-MEZAHE-SHOLECH],	-- ח.פ
-			N'514554666'															AS [MISPAR-ZIHUI-SHOLECH],
-			N'דלי אלון סוכנות לביטוח בע"מ'										AS [SHEM-GOREM-SHOLECH],
-			N'לימור'																AS [SHEM-PRATI-ISH-KESHER-SHOLECH],
-			N'ניסן'																	AS [SHEM-MISHPACHA-ISH-KESHER-SHOLECH],
-			N'037333441'															AS [MISPAR-TELEPHONE-KAVI-ISH-KESHER-SHOLECH],
-			N'info@pensiahova.co.il'												AS [E-MAIL-ISH-KESHER-SHOLECH],
+			'514554666'																AS [MISPAR-ZIHUI-SHOLECH],
+			CAST(N'דלי אלון סוכנות לביטוח בע"מ' AS Nvarchar(500)) 				AS [SHEM-GOREM-SHOLECH],
+			CAST(N'לימור' AS Nvarchar(500))											AS [SHEM-PRATI-ISH-KESHER-SHOLECH],
+			CAST(N'ניסן'	 AS Nvarchar(500))										AS [SHEM-MISHPACHA-ISH-KESHER-SHOLECH],
+			'037333441'																AS [MISPAR-TELEPHONE-KAVI-ISH-KESHER-SHOLECH],
+			'info@pensiahova.co.il'													AS [E-MAIL-ISH-KESHER-SHOLECH],
 			NULL																	AS [MISPAR-CELLULARI-ISH-KESHER-SHOLECH]
 	INTO #NetuneiGoremSholech
 
@@ -367,8 +367,8 @@ AS
 		COUNT(DISTINCT EmployerFundCode)																					AS [MISPAR-MAASIKIM],
 		COUNT(*)																										AS [MISPAR-RESHUMOT],
 		COUNT(DISTINCT MemberId)																						AS [MISPAR-AMITIM],
-		SUM(CAST(MoneySumA AS DECIMAL(15,2)) + CAST(MoneyPartB AS DECIMAL(15,2)) + CAST(MoneyPartC AS DECIMAL(15,2)))	AS [SACH-HAFRASHOT-BAKOVETZ],
-		SUM(CAST(MoneySumA AS DECIMAL(15,2)) + CAST(MoneyPartB AS DECIMAL(15,2)) + CAST(MoneyPartC AS DECIMAL(15,2)))	AS [SACH-HAFKADOT-BAKOVETZ]
+		SUM(CAST(MoneySumA AS DECIMAL(15,2)) + CAST(MoneySumB AS DECIMAL(15,2)) + CAST(MoneySumC AS DECIMAL(15,2)))	AS [SACH-HAFRASHOT-BAKOVETZ],
+		SUM(CAST(MoneySumA AS DECIMAL(15,2)) + CAST(MoneySumB AS DECIMAL(15,2)) + CAST(MoneySumC AS DECIMAL(15,2)))	AS [SACH-HAFKADOT-BAKOVETZ]
 	INTO #ReshumatSgira
 	FROM #RawData
 
