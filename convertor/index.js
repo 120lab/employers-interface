@@ -426,13 +426,13 @@ app.post('/upload', function (req, res) {
                     request(options, function (error, response, body) {
                         if (error) throw new Error(error);
 
-                        console.log(body);
+                        app.logger.info(body);
                     });
 
                 }
             })
             .on('end', function () {
-                //console.log(validations);
+                //app.logger.info(validations);
 
                 if (!dataValid) {
                     validations.push({ action: 'File data check', colName: '', rowNumber: 0, err: 'File data Invalid' });
@@ -489,7 +489,7 @@ app.post('/output', function (req, res) {
         if (error || response.statusCode == 400 ) 
             throw new Error((error == null ? body : error));
 
-        console.log(body);
+        app.logger.info(body);
 
         fs.writeFile(body.InputFileName, 'data:text/xml;charset=utf-8,' + body.FileXml, (err) => {
             if (err) throw err;
@@ -533,5 +533,5 @@ var server = app.listen(port, function () {
     var host = server.address().address
     var port = server.address().port
 
-    console.log("Example app listening at http://%s:%s", host, port)
+    app.logger.info("Example app listening at http://%s:%s", host, port)
 })

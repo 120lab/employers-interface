@@ -9,7 +9,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}/server-validator\\index.js"
+            "program": "${workspaceFolder}/app-fwrk\\app.js"
         }
     ]
 }

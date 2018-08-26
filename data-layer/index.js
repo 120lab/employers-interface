@@ -1,17 +1,6 @@
 const app = require('../app-fwrk/app');
 const sql = require('mssql');
 
-// const config = {
-//     user: 'idan.gvili',
-//     password: 'qwe123!@#',
-//     server: 'employers-interface-sql.database.windows.net', // You can use 'localhost\\instance' to connect to named instance
-//     database: 'employers-interface-db',
-
-//     options: {
-//         encrypt: true // Use this if you're on Windows Azure
-//     }
-// }
-
 const config = {
     user: app.db_user,
     password: app.db_password,
@@ -23,10 +12,10 @@ const config = {
     }
 }
 
-console.log(config);
+app.logger.info(config);
 
 process.on('unhandledRejection', (reason, promise) => {
-    console.log('Unhandled Rejection at:', reason.stack || reason)
+    app.logger.info('Unhandled Rejection at:', reason.stack || reason)
     // Recommended: send the information to sentry.io
     // or whatever crash reporting service you use
 })
@@ -38,7 +27,7 @@ var spExecuteCommandSpecific = function (procedureName, inParam, outputParam) {
 
     return new Promise((resolve, reject) => {
 
-       console.log("mssql exec " + procedureName + " params " + JSON.stringify(inParam));
+       app.logger.info("mssql exec " + procedureName + " params " + JSON.stringify(inParam));
 
         const pool = new sql.ConnectionPool(config, err => {
             //console.dir(pool)
@@ -108,11 +97,11 @@ var spExecuteCommandSpecific = function (procedureName, inParam, outputParam) {
 
             request.execute(procedureName, (err, result) => {
                 if (err != null) {
-                    console.log(err);
+                    app.logger.info(err);
                     reject();
                 }
                 else {
-                    console.log(result.output);
+                    app.logger.info(result.output);
                     const output = outputParam != null ? result.output : 0;
                     resolve();
                 }
@@ -120,7 +109,7 @@ var spExecuteCommandSpecific = function (procedureName, inParam, outputParam) {
         })
 
         // sql.on('error', err => {
-        //     console.log(err);
+        //     app.logger.info(err);
         //     reject();
         //     sql.close();
         // })
@@ -131,7 +120,7 @@ var spCreateEmployersInterfaces = function (procedureName, inParam) {
 
     return new Promise((resolve, reject) => {
 
-       console.log("mssql exec " + procedureName + " params " + JSON.stringify(inParam));
+       app.logger.info("mssql exec " + procedureName + " params " + JSON.stringify(inParam));
 
         const pool = new sql.ConnectionPool(config, err => {
             
@@ -143,18 +132,18 @@ var spCreateEmployersInterfaces = function (procedureName, inParam) {
 
             request.execute(procedureName, (err, result) => {
                 if (err != null) {
-                    console.log(err);                
+                    app.logger.info(err);                
                     reject();
                 }
                 else {
-                    console.log(JSON.stringify(result));                    
+                    app.logger.info(JSON.stringify(result));                    
                     resolve(result);
                 }
             });
         })
 
         // sql.on('error', err => {
-        //     console.log(err);
+        //     app.logger.info(err);
         //     reject();
         //     sql.close();
         // })
@@ -164,11 +153,11 @@ var spCreateEmployersInterfaces = function (procedureName, inParam) {
 app.post('/createemployerinterfaces', function (req, res) {
 
     var data = req.body;
-    console.log("call : createemployerinterfaces "+ JSON.stringify(req.body) );
+    app.logger.info("call : createemployerinterfaces "+ JSON.stringify(req.body) );
 
     spCreateEmployersInterfaces('sp_create_employers_interfaces', data)
         .then(item => {
-            console.log(JSON.stringify(data));
+            app.logger.info(JSON.stringify(data));
             //res.status(200).send('<?xml version="1.0" encoding="UTF-8"?>' + item.recordsets[0][0].FileXml);
             res.status(200).send(item.recordsets[0][0]);
         })
@@ -180,11 +169,11 @@ app.post('/createemployerinterfaces', function (req, res) {
 app.post('/save', function (req, res) {
 
     var data = req.body;
-    console.log("post save request"+ JSON.stringify(req.body) );
+    app.logger.info("post save request"+ JSON.stringify(req.body) );
 
     spExecuteCommandSpecific('sp_insert_InputFileData', data, null)
         .then(item => {
-            console.log(JSON.stringify(data));
+            app.logger.info(JSON.stringify(data));
             res.status(200).send("data saved with " + JSON.stringify(data));
         })
         .catch(err => {
@@ -198,7 +187,7 @@ var server = app.listen(port, function () {
     var host = server.address().address
     var port = server.address().port
 
-    console.log("Example app listening at http://%s:%s", host, port)
+    app.logger.info("Example app listening at http://%s:%s", host, port)
 })
 
 

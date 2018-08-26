@@ -10,8 +10,10 @@
   "author": "Idan Gvili <idan.gvili@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "compression": "^1.7.3",
+    "cors": "^2.8.4",
     "express": "^4.16.3",
-    "cors": "^2.8.4"
+    "winston": "^3.0.0"
   },
   "engines": {
     "node": ">=6.9.1"
