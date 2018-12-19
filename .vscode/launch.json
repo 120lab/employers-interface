@@ -9,7 +9,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}/app-fwrk\\app.js"
+            "program": "${workspaceFolder}/config\\server.js"
         }
     ]
 }

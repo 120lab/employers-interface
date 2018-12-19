@@ -1,0 +1,16 @@
+{
+  "name": "config-fwrk",
+  "version": "1.0.0",
+  "description": "config file template",
+  "main": "test.js",
+  "scripts": {
+    "start": "node test.js",
+    "test": "node test.js"
+  },
+  "author": "Idan Gvili <idan.gvili@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "lodash": "^4.17.11"
+  }
+}
